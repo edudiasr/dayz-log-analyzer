@@ -93,14 +93,17 @@ No Windows sem CMake (MinGW, ou o TDM-GCC que vem com o Dev-C++), roda o `build.
 
 Precisa de compilador com C++17. Sem dependências.
 
-## Algumas decisões
+## O que deu trabalho
 
-- **Jogador é o id, não o nome.** Vários jogadores entram como "Survivor", e o mesmo jogador às vezes aparece como "Nome (2)" quando reconecta rápido. Tudo é contado pelo id.
-- **Uma morte, várias linhas.** O jogo escreve a mesma morte em até três linhas (`hit by ... [HP: 0]`, `killed by ...`, `died. Stats>`), em ordem variada. Depois da primeira, o jogador fica marcado como morto até conectar de novo, e as outras linhas só completam a causa. A causa do `killed by` vale mais que a deduzida do dano, porque o dano vem com nome traduzido ("Urso-pardo") e o killed by não (`Animal_UrsusArctos`).
-- **Datas.** O ADM só tem a hora em cada linha. A data vem do cabeçalho `AdminLog started on ...`, e quando a hora volta (23:59 → 00:01) soma um dia. Um cabeçalho novo no meio do arquivo é restart, então quem estava online tem a sessão fechada ali.
-- **Erros de script do RPT.** Um `Virtual Machine Exception` ocupa várias linhas. O analisador junta o motivo (`Reason:`) e a primeira linha do stack trace, que é o que diz qual mod e qual arquivo estão quebrando. As linhas de dentro do bloco não contam como erros separados.
-- **Agrupar mensagens.** Antes de contar, os números viram `#` (menos os grudados em letra, tipo `p3d`), assim `wall_4.p3d` e `wall_8.p3d` caem no mesmo grupo. As horas com espaço na frente (` 6:03:12`) também são tiradas.
-- **Sem regex.** Cada linha é lida com `find` e `string_view`. Os 26 dias de log do meu servidor (52 arquivos, 255 MB) rodam em cerca de 3,7 s.
+A primeira versão eu fiz em cima de um log de exemplo e quando rodei nos logs de verdade do servidor quase nada batia. Tinha IA matando gente, mod escrevendo no ADM, linha de IA com "Player" no meio, e dois jogadores diferentes chamados "Survivor". Por isso tudo é contado pelo id do jogador e não pelo nome (o mesmo cara às vezes aparece como "Nome (2)" quando reconecta rápido).
+
+Outra coisa chata: o jogo escreve a mesma morte em duas ou três linhas (`hit by ... [HP: 0]`, `killed by ...`, `died. Stats>`) e não é sempre na mesma ordem. Depois da primeira linha o jogador fica marcado como morto até conectar de novo, e as outras só completam a causa. Se a causa veio do dano ela pode ser trocada pela do `killed by`, porque o dano vem com nome traduzido ("Urso-pardo") e o killed by vem certinho (`Animal_UrsusArctos`).
+
+O ADM só tem a hora em cada linha, a data fica no cabeçalho `AdminLog started on ...`. Quando a hora volta pra trás (23:59 -> 00:01) eu somo um dia, e se aparece outro cabeçalho no meio é porque o servidor reiniciou, então fecho a sessão de quem tava online.
+
+No RPT, um erro de script (`Virtual Machine Exception`) ocupa várias linhas e o que importa mesmo é o `Reason:` e a primeira linha do stack trace, que mostra qual mod tá quebrando. Pra agrupar mensagens parecidas troco os números por `#`, menos os grudados em letra tipo `p3d`. Também tive que tratar hora com espaço na frente (` 6:03:12`), que eu não sabia que existia até ver no log.
+
+Não usei regex, é tudo `find` e `string_view`. 5 dias de log do meu servidor (52 arquivos, 255 MB) rodam em uns 3,7 s.
 
 ## Estrutura
 
@@ -118,6 +121,4 @@ Os testes rodam no GitHub Actions em Linux (GCC) e Windows (MSVC) a cada push.
 
 O formato do ADM muda um pouco entre versões do DayZ e com mods. Linhas que o analisador não entende entram na contagem de "não reconhecidas" no fim do relatório, e não quebram nada.
 
----
-
-Eduardo Dias · [portfólio](https://edudiasr.github.io/portfolio-web/) · [LinkedIn](https://www.linkedin.com/in/eduardo-dias-99b90a44a)
+Se rodar no seu servidor e aparecer muita linha não reconhecida, abre uma issue com um trecho do log (sem os ids) que eu dou uma olhada.
