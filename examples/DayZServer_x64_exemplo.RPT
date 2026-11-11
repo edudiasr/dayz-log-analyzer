@@ -1,0 +1,46 @@
+=====================================================================
+== C:\DayZServer\DayZServer_x64.exe
+== DayZServer_x64.exe  -config=serverDZ.cfg -port=2302 -profiles=profiles -dologs -adminlog
+=====================================================================
+Exe timestamp: 2026/10/20 14:12:51
+Current time:  2026/11/08 22:58:01
+Version 1.29.163709
+=====================================================================
+
+22:58:02.114 Mission read.
+22:58:05.320 SCRIPT       : Creating economy
+22:58:06.001 Warning Message: No entry 'bin\config.bin/CfgVehicles/Land_Wreck_Old_1.EnfAnimSys'.
+22:58:06.002 Warning Message: No entry 'bin\config.bin/CfgVehicles/Land_Wreck_Old_2.EnfAnimSys'.
+22:58:09.882 ENTITY    (W): Unknown object class 'pond' (dz\water\ponds\pond_10x50.p3d)
+22:58:12.007  SCRIPT    (E): Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'MissaoManager'
+Function: 'OnUpdate'
+Stack trace:
+MeuMod/scripts/4_World/missao_manager.c:216 Function OnUpdate
+scripts/4_World/plugins\pluginmanager.c:125 Function PluginsInit
+22:58:30.551  SCRIPT    (E): Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'MissaoManager'
+Function: 'OnUpdate'
+Stack trace:
+MeuMod/scripts/4_World/missao_manager.c:216 Function OnUpdate
+23:01:12.330  SCRIPT    (E): Virtual Machine Exception
+
+Reason: [::JsonLoadFile] :: [ERROR] :: Cannot load data from "$profile:\MeuMod\config.json":
+JSON ERROR:
+Invalid value.
+
+Function: 'JsonLoadFile'
+Stack trace:
+scripts/3_Game/tools\jsonfileloader.c:129 Function JsonLoadFile
+MeuMod/scripts/3_Game/config.c:27 Function LoadConfig
+23:05:45.002  PHYSICS    (E): LODShape: 'dz\structures\walls\wall_indcnc_4.p3d' was instanced with interaction layer 'CHARACTER'
+23:06:45.002  PHYSICS    (E): LODShape: 'dz\structures\walls\wall_indcnc_8.p3d' was instanced with interaction layer 'CHARACTER'
+23:30:00.000 ERROR: Mod key 'MeuMod.bikey' not found
+ 0:00:41.112  ANIMATION (E): Can't load @12345/Anims/cfg/skeletons.anim.xml
+ 0:44:59.000 Mission finished.
